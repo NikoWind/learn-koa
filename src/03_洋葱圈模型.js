@@ -7,6 +7,8 @@ app.use((ctx, next) => {
   console.log(1)
   next()
   console.log(2)
+  // console.log('---------------')
+  // ctx.body = 'hello world'
 })
 app.use((ctx, next) => {
   console.log(3)
