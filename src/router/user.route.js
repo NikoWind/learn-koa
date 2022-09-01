@@ -14,7 +14,7 @@ router.get('/', (ctx) => {
   // 通过 ctx.query 是ctx.request.query的代理 解析键值对参数
   const { start = 0, end = 0 } = ctx.query
 
-  if (start <= end) ctx.throw(422)
+  if (start <= end) ctx.throw(400) // 或者返回422也可以
 
   const res = db.filter((item) => item.age >= start && item.age <= end)
   // 解析键值对
@@ -33,6 +33,26 @@ router.get('/:id', (ctx) => {
 router.post('/', (ctx) => {
   console.log(ctx.request.body)
   ctx.body = '创建用户'
+})
+router.post('/upload', (ctx) => {
+  console.log(ctx.request.files)
+  if (ctx.request.files) { //这里就是插件添加的
+    const { file } = ctx.request.files; //file上有很多属性，下面只是返回了文件名
+    if (file) {
+      ctx.body = {
+        code: 0,
+        msg: "上传成功",
+        data: `${file.name}`
+      }
+    }
+  } else {
+    ctx.body = {
+      code: -1,
+      msg: "上传失败",
+      data: null
+    }
+  }
+  // ctx.body = '上传文件'
 })
 
 // 接口: 获取id=1的用户编写的article=1
